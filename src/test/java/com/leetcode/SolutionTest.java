@@ -9,6 +9,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class SolutionTest {
 
+    @ParameterizedTest
+    @MethodSource
+    void isMatch(String input, String pattern, boolean expectedAnswer) {
+        final boolean actualAnswer = new Solution().isMatch(input, pattern);
+        Assertions.assertThat(actualAnswer)
+                .as("'%s' should %s '%s' but it %s",
+                        input,
+                        expectedAnswer ? "match" : "not match",
+                        pattern,
+                        actualAnswer ? "did" : "didn't")
+                .isEqualTo(expectedAnswer);
+    }
+
     private static Stream<Arguments> isMatch() {
         return Stream.of(
                 Arguments.of("adceb", "*a*b", true),
@@ -23,18 +36,5 @@ class SolutionTest {
                         "aaaabaaaabbbbaabbbaabbaababbabbaaaababaaabbbbbbaabbbabababbaaabaabaaaaaabbaabbbbaababbababaabbbaababbbba",
                         "*****b*aba***babaa*bbaba***a*aaba*b*aa**a*b**ba***a*a*",
                         true));
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    void isMatch(String input, String pattern, boolean expectedAnswer) {
-        final boolean actualAnswer = new Solution().isMatch(input, pattern);
-        Assertions.assertThat(actualAnswer)
-                .as("'%s' should %s '%s' but it %s",
-                        input,
-                        expectedAnswer ? "match" : "not match",
-                        pattern,
-                        actualAnswer ? "did" : "didn't")
-                .isEqualTo(expectedAnswer);
     }
 }
