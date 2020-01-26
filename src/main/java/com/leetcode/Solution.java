@@ -5,32 +5,33 @@ public class Solution {
     public boolean isMatch(String input, String pattern) {
         final int n = input.length();
 
-        boolean[] data = new boolean[n + 1];
-        data[0] = true;
+        boolean[] matches = new boolean[n + 1];
+        matches[0] = true;
+        boolean asterisk = false;
+        int liveZone = 0;
 
         for (int k = 0; k < pattern.length(); k++) {
             char p = pattern.charAt(k);
-            boolean atLeastOneMatches = false;
             if (p == '*') {
-                for (int i = 0; i <= n; i++) {
-                    data[i] = atLeastOneMatches || data[i];
-                    atLeastOneMatches |= data[i];
-                }
+                asterisk = true;
             } else {
-                boolean prev = data[0];
-                for (int i = 1; i <= n; i++) {
-                    final boolean matches = prev && (p == '?' || p == input.charAt(i - 1));
-                    prev = data[i];
-                    data[i] = matches;
-                    atLeastOneMatches |= matches;
+                final int stop = liveZone;
+                liveZone = Integer.MAX_VALUE;
+                for (int i = n; i > stop; i--) {
+                    final boolean match = (asterisk || matches[i - 1])
+                            && (p == '?' || p == input.charAt(i - 1));
+                    matches[i] = match;
+                    if (match) {
+                        liveZone = i;
+                    }
                 }
-                data[0] = false;
-            }
-            if (!atLeastOneMatches) {
-                return false;
+                asterisk = false;
+                if (liveZone == Integer.MAX_VALUE) {
+                    return false;
+                }
             }
         }
 
-        return data[n];
+        return matches[n];
     }
 }
