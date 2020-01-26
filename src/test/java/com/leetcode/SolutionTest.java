@@ -24,6 +24,7 @@ class SolutionTest {
 
     private static Stream<Arguments> isMatch() {
         return Stream.of(
+                Arguments.of("aa", "*", true),
                 Arguments.of("adceb", "*a*b", true),
                 Arguments.of("aab", "c*a*b", false),
                 Arguments.of("mississippi", "m??*ss*?i*pi", false),
