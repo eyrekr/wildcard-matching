@@ -32,6 +32,6 @@ public class Solution {
             }
         }
 
-        return matches[n];
+        return matches[n] || asterisk;
     }
 }
